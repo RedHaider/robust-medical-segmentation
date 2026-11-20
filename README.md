@@ -1,4 +1,4 @@
-# Robust MedSeg Lite
+# Robust MedSeg: Heavy Robustness Benchmark
 
 An original, lightweight medical-image segmentation robustness benchmark inspired by research on efficient frequency-aware medical segmentation. It is designed as a portfolio bridge from CNN/computer-vision classification to trustworthy healthcare AI.
 
@@ -51,6 +51,29 @@ The included seed-27 experiment produced the following Dice scores:
 | Strong contrast reduction | 0.838 | 0.839 |
 
 The frequency residual did not materially improve this logistic baseline. This rejects the initial improvement hypothesis for the present feature design and synthetic dataset. The most useful next experiment is a learned fusion or compact U-Net baseline on a licensed real dataset, with patient-level splits and repeated seeds.
+
+## Heavy experiment
+
+The upgraded experiment adds two nonlinear multiscale Extra Trees models, corruption-based training augmentation, validation-only threshold tuning, three independent seeds, 24 held-out test images per seed, confidence intervals, ablations, and saved quantitative/qualitative figures.
+
+```bash
+python -m robust_medseg.heavy_experiment --output outputs/heavy
+```
+
+The primary claim is limited to this documented synthetic benchmark: the corruption-augmented multiscale model is compared with the original spatial logistic baseline using strong-noise Dice. It is **not** claimed to improve a professor's published architecture or clinical performance.
+
+### Verified heavy result
+
+Across three independent seeds, the corruption-augmented multiscale Extra Trees model achieved **0.670 mean strong-noise Dice** (95% CI 0.649-0.690), compared with **0.271** (95% CI 0.252-0.289) for the original spatial logistic baseline. That is a **+0.399 absolute Dice gain** under this synthetic protocol.
+
+| Condition | Spatial logistic | Extra Trees | Robust Extra Trees |
+|---|---:|---:|---:|
+| Clean | 0.686 | 0.855 | 0.853 |
+| Strong noise | 0.271 | 0.565 | **0.670** |
+| Strong blur | 0.796 | 0.858 | **0.859** |
+| Strong contrast reduction | **0.841** | 0.802 | 0.813 |
+
+The augmentation improves strong-noise robustness over the same multiscale model by +0.104 Dice, while slightly reducing clean Dice by 0.003. The contrast result is a documented limitation: the logistic baseline remains stronger there. See `results/heavy_metrics.csv` for the reproducible summary.
 
 ## Real-data extension
 

@@ -4,6 +4,7 @@ from robust_medseg.corruptions import corrupt
 from robust_medseg.features import fft_residual, pixel_features
 from robust_medseg.metrics import segmentation_metrics
 from robust_medseg.synthetic import make_dataset
+from robust_medseg.advanced_model import RobustExtraTreesSegmenter, multiscale_features
 
 
 def test_dataset_is_reproducible():
@@ -34,3 +35,14 @@ def test_corruptions_preserve_shape_and_range():
         result = corrupt(images[0], kind, 0.2, rng)
         assert result.shape == images[0].shape
         assert result.min() >= 0 and result.max() <= 1
+
+
+def test_multiscale_model_probability_and_threshold():
+    train_x, train_y = make_dataset(5, 24, 8)
+    val_x, val_y = make_dataset(2, 24, 9)
+    model = RobustExtraTreesSegmenter(8, augment=True).fit(train_x, train_y, max_pixels=6000)
+    model.tune_threshold(val_x, val_y)
+    probability = model.predict_proba(val_x)
+    assert probability.shape == val_x.shape
+    assert 0.25 <= model.threshold <= 0.75
+    assert multiscale_features(train_x[0]).shape == (24 * 24, 10)

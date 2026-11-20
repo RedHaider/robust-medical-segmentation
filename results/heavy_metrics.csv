@@ -1,0 +1,17 @@
+model,condition,dice_mean,dice_ci95_low,dice_ci95_high
+spatial_logistic,clean,0.686327,0.662937,0.709717
+spatial_logistic,noise_strong,0.270529,0.252065,0.288992
+spatial_logistic,blur_strong,0.795872,0.781008,0.810736
+spatial_logistic,contrast_strong,0.840821,0.835877,0.845766
+frequency_logistic,clean,0.685724,0.662541,0.708907
+frequency_logistic,noise_strong,0.268431,0.244910,0.291952
+frequency_logistic,blur_strong,0.795593,0.782070,0.809117
+frequency_logistic,contrast_strong,0.841995,0.837009,0.846981
+extra_trees,clean,0.855492,0.852588,0.858396
+extra_trees,noise_strong,0.565233,0.544318,0.586148
+extra_trees,blur_strong,0.857964,0.853677,0.862250
+extra_trees,contrast_strong,0.801571,0.784863,0.818280
+robust_extra_trees,clean,0.852604,0.848028,0.857180
+robust_extra_trees,noise_strong,0.669539,0.648711,0.690367
+robust_extra_trees,blur_strong,0.859424,0.854859,0.863990
+robust_extra_trees,contrast_strong,0.812779,0.800262,0.825297
